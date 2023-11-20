@@ -6,6 +6,8 @@ import { Model } from 'mongoose';
 import { User } from './user.model';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { SignInUserDto } from './dtos/singin-user.dto';
+import { SignUpUserDto } from './dtos/signup-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,15 +18,20 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(username: string, password: string): Promise<User> {
+  async signUp(signUpUserDto: SignUpUserDto): Promise<User> {
+    const { username, password, email } = signUpUserDto;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new this.userModel({ username, password: hashedPassword });
+    const user = new this.userModel({
+      username,
+      password: hashedPassword,
+      email,
+    });
     return user.save();
   }
 
-  async validateUser(username: string, password: string): Promise<User | null> {
+  async validateUser(signInUserDto: SignInUserDto): Promise<User | null> {
+    const { username, password } = signInUserDto;
     const user = await this.userModel.findOne({ username }).exec();
-
     if (user && (await bcrypt.compare(password, user.password))) {
       const result = user.toObject();
       delete result['password'];
