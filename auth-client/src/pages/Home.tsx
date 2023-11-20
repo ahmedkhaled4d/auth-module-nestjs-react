@@ -10,7 +10,7 @@ export default function Home() {
         </Alert>
       </Row>
       <div className="text-center">
-        Already registered? <Link to="/signin">Sign In</Link>
+        Already signin? <Link to="/app">open app</Link>
       </div>
     </Container>
   );

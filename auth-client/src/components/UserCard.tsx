@@ -1,14 +1,14 @@
 import { Button, Card, Container, Row } from "react-bootstrap";
 
-export default function UserCard() {
+export default function UserCard({ data }) {
   return (
     <Container>
       <Row>
         <Card>
           <Card.Body>
-            <Card.Title>ahmed</Card.Title>
+            <Card.Title>{data.username}</Card.Title>
             <Card.Subtitle className="mb-2 text-muted">
-              ahmedkhaled4d@gmail.com
+              {data.email}
             </Card.Subtitle>
             <Card.Text>account create</Card.Text>
             <Button variant="danger">remove</Button>

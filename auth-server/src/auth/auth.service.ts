@@ -32,7 +32,7 @@ export class AuthService {
     });
     const tokens = await this.getTokens(newUser._id, newUser.email);
     await this.updateRefreshToken(newUser._id, tokens.refreshToken);
-    return tokens;
+    return { user: newUser.email, ...tokens };
   }
 
   async signIn(data: AuthDto) {
@@ -44,7 +44,7 @@ export class AuthService {
       throw new BadRequestException('Password is incorrect');
     const tokens = await this.getTokens(user._id, user.email);
     await this.updateRefreshToken(user._id, tokens.refreshToken);
-    return tokens;
+    return { user: user.email, ...tokens };
   }
 
   async logout(userId: string) {
@@ -82,7 +82,7 @@ export class AuthService {
   }
 
   /**
-   *
+   * prepare accessToken, refreshToken
    * @param userId
    * @param email
    * @returns { accessToken, refreshToken }
@@ -106,7 +106,7 @@ export class AuthService {
         },
         {
           secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-          expiresIn: '7d',
+          expiresIn: '7d', // longer than access token
         },
       ),
     ]);
