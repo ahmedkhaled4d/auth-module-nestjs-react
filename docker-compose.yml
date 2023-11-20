@@ -1,0 +1,16 @@
+# docker-compose.yml
+
+version: "3"
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+  nestjs:
+    build:
+      context: ./auth-server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
