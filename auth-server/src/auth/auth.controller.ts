@@ -1,39 +1,36 @@
-// src/auth/auth.controller.ts
-
-import {
-  Controller,
-  Request,
-  Post,
-  UseGuards,
-  Get,
-  Body,
-} from '@nestjs/common';
-import { LocalAuthGuard } from './local-auth.guard';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
+import { AccessTokenGuard } from 'src/common/guards/accessToken.guard';
+import { RefreshTokenGuard } from 'src/common/guards/refreshToken.guard';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
-import { SignUpUserDto } from './dtos/signup-user.dto';
-import { SignInUserDto } from './dtos/singin-user.dto';
+import { AuthDto } from './dto/auth.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
-
-  @Get('')
-  async listUsers() {
-    return this.authService.listUsers();
-  }
+  constructor(private authService: AuthService) {}
 
   @Post('signup')
-  async signUp(@Body() signUpUserDto: SignUpUserDto) {
-    return this.authService.signUp(signUpUserDto);
+  signup(@Body() createUserDto: CreateUserDto) {
+    return this.authService.signUp(createUserDto);
   }
 
   @Post('signin')
-  async signIn(@Body() signInUserDto: SignInUserDto) {
-    return this.authService.validateUser(signInUserDto);
+  signin(@Body() data: AuthDto) {
+    return this.authService.signIn(data);
   }
 
-  @UseGuards(LocalAuthGuard)
-  async profile(@Request() req) {
-    return this.authService.signIn(req.user);
+  @UseGuards(AccessTokenGuard)
+  @Get('logout')
+  logout(@Req() req: Request) {
+    this.authService.logout(req.user['sub']);
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Get('refresh')
+  refreshTokens(@Req() req: Request) {
+    const userId = req.user['sub'];
+    const refreshToken = req.user['refreshToken'];
+    return this.authService.refreshTokens(userId, refreshToken);
   }
 }
