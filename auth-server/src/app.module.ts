@@ -7,7 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [
     AuthModule,
-    MongooseModule.forRoot('mongodb://localhost/easygenerator'),
+    MongooseModule.forRoot('mongodb://mongodb/easygenerator'),
   ],
   controllers: [AppController],
   providers: [AppService],

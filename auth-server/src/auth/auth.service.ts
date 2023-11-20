@@ -39,4 +39,9 @@ export class AuthService {
     this.logger.log(`User ${user.username} logged in`);
     return { accessToken };
   }
+
+  async listUsers(): Promise<User[] | null> {
+    const users = await this.userModel.find().exec();
+    return users;
+  }
 }

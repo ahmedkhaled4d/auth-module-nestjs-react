@@ -1,12 +1,17 @@
 // src/auth/auth.controller.ts
 
-import { Controller, Request, Post, UseGuards } from '@nestjs/common';
+import { Controller, Request, Post, UseGuards, Get } from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get('')
+  async listUsers() {
+    return this.authService.listUsers();
+  }
 
   @Post('signup')
   async signUp(@Request() req) {
