@@ -30,6 +30,7 @@ export default function Signup() {
             withCredentials: true,
           }
         );
+        localStorage.setItem("user", JSON.stringify(data));
         setAuth(data);
         navigate("/app");
       }

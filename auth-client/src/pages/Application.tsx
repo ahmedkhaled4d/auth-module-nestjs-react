@@ -2,11 +2,16 @@ import { Alert, Button, Col, Container, Row } from "react-bootstrap";
 import UserCard from "../components/UserCard";
 import { axiosApiInstance } from "../api/axios";
 import { useEffect, useState } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Application() {
+  const nav = useNavigate();
   const user = JSON.parse(localStorage.getItem("user") ?? "{}");
   const [users, setUsers] = useState([]);
+  const handleRemoveItem = (id) => {
+    setUsers(users.filter((item) => item._id !== id));
+  };
+
   useEffect(() => {
     const getUsers = async () => {
       const { data } = await axiosApiInstance.get("/users");
@@ -18,7 +23,8 @@ export default function Application() {
   const logout = async () => {
     await axiosApiInstance.get("/auth/logout");
     localStorage.clear();
-    return redirect("/signin");
+    // Redirect to the home page after logout
+    nav("/");
   };
   return (
     <Container>
@@ -38,7 +44,7 @@ export default function Application() {
         </Col>
       </Row>
       {users.map((item, index) => (
-        <UserCard key={index} data={item} />
+        <UserCard key={index} data={item} done={handleRemoveItem} />
       ))}
     </Container>
   );
