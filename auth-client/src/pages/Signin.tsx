@@ -1,11 +1,9 @@
 import { Alert } from "react-bootstrap";
-import { Link, json, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { axiosApiInstance } from "../api/axios";
 
 export default function Signin() {
-  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState<string | null>(null);
   const [email, setEmail] = useState<string>("");
@@ -31,7 +29,6 @@ export default function Signin() {
       // document.cookie = `refreshToken=${data.refreshToken}; Secure; SameSite=None; Path=/; HttpOnly`;
 
       localStorage.setItem("user", JSON.stringify(data));
-      setAuth(data);
       navigate("/app");
     } catch (err) {
       setErrMsg(err?.response?.data.message);

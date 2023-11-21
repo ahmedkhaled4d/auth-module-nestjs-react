@@ -1,12 +1,10 @@
 import { Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
 import { useEffect, useState } from "react";
 import { axiosApiInstance } from "../api/axios";
 import { checkPasswordErrors } from "../utils/validate";
 
 export default function Signup() {
-  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState<string | null>(null);
   const [username, setUsername] = useState<string>("");
@@ -31,12 +29,9 @@ export default function Signup() {
           }
         );
         localStorage.setItem("user", JSON.stringify(data));
-        setAuth(data);
+
         navigate("/app");
       }
-
-      // setUser("");
-      // setPwd("");
     } catch (err) {
       setErrMsg(err?.response?.data.message);
     }

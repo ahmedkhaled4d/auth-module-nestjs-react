@@ -3,12 +3,13 @@ import UserCard from "../components/UserCard";
 import { axiosApiInstance } from "../api/axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Iuser } from "../types/user";
 
 export default function Application() {
   const nav = useNavigate();
   const user = JSON.parse(localStorage.getItem("user") ?? "{}");
-  const [users, setUsers] = useState([]);
-  const handleRemoveItem = (id) => {
+  const [users, setUsers] = useState<Iuser[]>([]);
+  const handleRemoveItem = (id: string) => {
     setUsers(users.filter((item) => item._id !== id));
   };
 
@@ -43,8 +44,12 @@ export default function Application() {
           </Button>
         </Col>
       </Row>
-      {users.map((item, index) => (
-        <UserCard key={index} data={item} done={handleRemoveItem} />
+      {users.map((item) => (
+        <UserCard
+          key={item._id}
+          data={item}
+          removeFromList={handleRemoveItem}
+        />
       ))}
     </Container>
   );

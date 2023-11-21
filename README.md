@@ -9,3 +9,5 @@ The access token is used to authenticate API requests to access protected resour
 - passport
 
 ![sequence-diagram](./sequence-diagram.webp)
+
+    `docker-compose up --build`

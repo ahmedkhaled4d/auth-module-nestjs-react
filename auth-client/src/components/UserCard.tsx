@@ -1,10 +1,10 @@
 import { Button, Card, Container, Row } from "react-bootstrap";
 import { axiosApiInstance } from "../api/axios";
 
-export default function UserCard({ data, done }) {
+export default function UserCard({ data, removeFromList }) {
   const remove = async (id: string) => {
     await axiosApiInstance.delete(`/users/${id}`);
-    done(id);
+    removeFromList(id);
   };
   return (
     <Container>
