@@ -10,4 +10,6 @@ The access token is used to authenticate API requests to access protected resour
 
 ![sequence-diagram](./sequence-diagram.webp)
 
+to run project using docker compose
+
     `docker-compose up --build`
